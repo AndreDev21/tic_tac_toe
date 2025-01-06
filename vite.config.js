@@ -7,4 +7,7 @@ export default defineConfig({
   server: {
     port: 5000, // Defina a porta aqui
   },
+  base: '/07-tic-tac-toe-starting-project/',
 })
+
+
