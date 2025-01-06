@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Player({
   initialName,
@@ -8,12 +8,19 @@ export default function Player({
 }) {
   const [playerName, setInitialName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
+  const inputRef = useRef(null);
 
   let editablePlayerName = <span className="player-name">{playerName}</span>;
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      buttonClicked();
+    }
+  };
+  
   if (isEditing) {
     editablePlayerName = (
-      <input type="text" value={playerName} onChange={handleChange} />
+      <input ref={inputRef} type="text" value={playerName} onChange={handleChange}  onKeyDown={handleKeyDown} />
     );
   }
 
@@ -23,11 +30,14 @@ export default function Player({
 
   function buttonClicked() {
     setIsEditing((editing) => !editing);
+    setTimeout(() => inputRef.current?.focus(), 0);
     if (isEditing) {
       onChangeName(symbol, playerName);
     }
   }
 
+  
+  
   return (
     <li className={isActive ? "active" : undefined}>
       <span className="player">
